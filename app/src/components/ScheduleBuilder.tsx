@@ -168,6 +168,18 @@ export default class ScheduleBuilder extends Component<Props, States> {
         this.setState({ selections: newSelections });
     }
 
+    reload = () => {
+        console.log("Reloading Schedule Builder");
+        const newSelections = this.state.selections.map((sel) =>
+            sel.filter((sec) => sec),
+        );
+        this.setState({
+            selections: getDefaultSelections(),
+            schedules: [],
+        });
+        this.setState({ selections: newSelections });
+    };
+
     render() {
         // Show loading screen if filters/terms haven't been fetched yet
         if (this.state.filters === null)
@@ -258,6 +270,7 @@ export default class ScheduleBuilder extends Component<Props, States> {
                     {/* Generated Schedules */}
                     <div className="overflow-y-auto w-full p-1">
                         <MultipleScheduleDisplay
+                            reload={this.reload.bind(this)}
                             schedules={this.state.schedules}
                             key={new Date().getTime()}
                         />
