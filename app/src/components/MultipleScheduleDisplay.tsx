@@ -7,13 +7,14 @@ const NUM_PER_PAGE = 25;
 interface Props {
     schedules: Schedule[];
     numPerPage?: number;
+    reload: () => void;
 }
 
 export default function MultipleScheduleDisplay(props: Props) {
     const [numPages, setNumPages] = useState(1);
-
     const maxSchedulesToShow = (props.numPerPage ?? NUM_PER_PAGE) * numPages;
     const schedulesToShow = props.schedules.slice(0, maxSchedulesToShow);
+
     return (
         <div>
             <p className={"text-center"}>
@@ -22,14 +23,12 @@ export default function MultipleScheduleDisplay(props: Props) {
                     Generated
                 </b>
             </p>
-
             {schedulesToShow.map((schedule: Schedule, s) => (
                 <div key={s}>
                     <u>Schedule #{s + 1}</u>
                     <ScheduleDisplay schedule={schedule} />
                 </div>
             ))}
-
             {maxSchedulesToShow < props.schedules.length && (
                 <div className={"text-center"}>
                     <button
@@ -39,6 +38,18 @@ export default function MultipleScheduleDisplay(props: Props) {
                         onClick={() => setNumPages(numPages + 1)}
                     >
                         View More
+                    </button>
+                </div>
+            )}
+            {0 < props.schedules.length && (
+                <div className={"text-right"}>
+                    <button
+                        className={
+                            "bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-3 rounded inline-flex items-center"
+                        }
+                        onClick={props.reload}
+                    >
+                        Bring to Top
                     </button>
                 </div>
             )}
